@@ -1,0 +1,7 @@
+apiVersion: buck.technosophos.com/v1
+kind: Book
+metadata:
+  name: moby-dick
+spec:
+  title: Moby Dick, or the White Whale
+  author: Herman Mellville

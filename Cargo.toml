@@ -1,0 +1,15 @@
+[package]
+name = "buck"
+version = "0.1.0"
+authors = ["Matt Butcher <matt.butcher@microsoft.com>"]
+edition = "2018"
+
+[dependencies]
+kube = { version = "0.16.1", features = ["openapi"] }
+k8s-openapi = { version = "0.5.1", features = ["v1_15"] }
+serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1.0"
+failure = "0.1.5"
+ulid = "0.3"
+base64 = "0.10"
