@@ -1,0 +1,5 @@
+This creates a custom controller for your CRD.
+
+The controller will listen for the resource type {{.Values.crd.group}}/{{.Values.crd.version}}.{{.Values.crd.kind}}.
+
+Each time a CRD of that type is created, modified, or deleted, a new request will be sent to the Brigade project {{ .Values.project }}

@@ -1,0 +1,25 @@
+# Default values for buck.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# You should definitely override this.
+project: brigade-XXXXXXXXXXXXXX
+crd:
+  group: buck.technosophos.com # Set this to your domain
+  version: v1 # v1, v1alpha1, etc
+  kind: Book # This should be capitalized. It will be lowercased where necessary.
+  plural: books # Case does not matter here
+
+# From here down, you probably do not need to edit.
+replicaCount: 1 # Usually you only want 1
+image:
+  repository: technosophos/buck
+  pullPolicy: Always
+
+nameOverride: ""
+fullnameOverride: ""
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
