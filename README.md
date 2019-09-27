@@ -11,10 +11,12 @@ If you have Brigade installed and configured, BUCK is as easy as 1-2-3.
 You Helm `vaules.yaml` file is your entry point:
 
 ```yaml
-group: my.example.com
-version: v1alpha1
-kind: book
-pluralKind: books
+project: brigade-XXXXXXXXXXXXXX
+crd:
+    group: my.example.com
+    version: v1alpha1
+    kind: Book   # This should be capitalized
+    pluralKind: books
 ```
 
 ## Step 2: Write your JS

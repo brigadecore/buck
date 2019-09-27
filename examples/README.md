@@ -1,5 +1,8 @@
 This is a basic example of BUCK.
 
+STOP: You probably want to just use the Helm chart. This is for setting up a development
+environment.
+
 This document walks through the process of setting up BUCK to run locally.
 
 To use this example:
