@@ -1,4 +1,4 @@
-FROM rust:1.36 AS builder
+FROM rust:1.37 AS builder
 WORKDIR /usr/src/buck
 
 COPY Cargo.toml .
@@ -9,6 +9,7 @@ COPY Cargo.lock .
 RUN mkdir -p ./src/ && \
     echo 'fn main() {}' > ./src/main.rs && \
     echo '' > ./src/lib.rs
+RUN cargo fetch
 RUN cargo build --release && \
     rm -rf ./target/release/.fingerprint/buck-*
 
