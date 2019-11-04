@@ -1,4 +1,4 @@
-REPO ?= technosophos/buck
+REPO ?= brigadecore/buck
 TAG ?= latest
 
 .PHONY: build

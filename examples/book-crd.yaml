@@ -1,9 +1,9 @@
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: books.buck.technosophos.com
+  name: books.buck.brigadecore.com
 spec:
-  group: buck.technosophos.com
+  group: buck.brigadecore.com
   versions:
     - name: v1
       served: true

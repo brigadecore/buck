@@ -8,7 +8,7 @@ If you have Brigade installed and configured, BUCK is as easy as 1-2-3.
 
 ## Step 0. Clone this repository
 
-You know what to do! `git clone git@github.com:technosophos/buck.git`
+You know what to do! `git clone git@github.com:brigadecore/buck.git`
 
 ## Step 1: Write your JS Controller
 
