@@ -14,7 +14,7 @@ function build(event, project) {
 }
 
 function runSuite(e, p) {
-    var check = new Check(e, p, build(e, p));
+    var check = new Check(e, p, build(e, p), `https://brigadecore.github.io/kashti/builds/${e.buildID}`);
     check.run();
 }
 
