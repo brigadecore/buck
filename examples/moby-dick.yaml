@@ -1,4 +1,4 @@
-apiVersion: buck.technosophos.com/v1
+apiVersion: buck.brigadecore.com/v1
 kind: Book
 metadata:
   name: moby-dick
