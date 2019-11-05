@@ -16,10 +16,26 @@ spec:
         app.kubernetes.io/name: {{ include "buck.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      serviceAccountName: {{ template "buck.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PROJECT
+              value: {{ .Values.project }}
+            - name: GROUP
+              value: {{ .Values.crd.group }}
+            - name: VERSION
+              value: {{ .Values.crd.version }}
+            - name: KIND
+              value: {{ .Values.crd.kind }}
+            - name: PLURAL
+              value: {{ .Values.crd.plural }}
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
