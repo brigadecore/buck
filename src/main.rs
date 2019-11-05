@@ -47,8 +47,12 @@ fn main() {
     loop {
         informer.poll().expect("informer poll failed");
         while let Some(event) = informer.pop() {
-            
-            handle(client.clone(), event, project.clone(), namespace.clone().unwrap());
+            handle(
+                client.clone(),
+                event,
+                project.clone(),
+                namespace.clone().unwrap(),
+            );
         }
     }
 }
@@ -56,26 +60,52 @@ fn main() {
 fn handle(client: APIClient, event: WatchEvent<KubeObj>, project: String, namespace: String) {
     match event {
         WatchEvent::Added(o) => create_secret(client, "resource_added", o, project, namespace),
-        WatchEvent::Modified(o) => create_secret(client, "resource_modified", o, project, namespace),
+        WatchEvent::Modified(o) => {
+            create_secret(client, "resource_modified", o, project, namespace)
+        }
         WatchEvent::Deleted(o) => create_secret(client, "resource_delete", o, project, namespace),
         WatchEvent::Error(e) => println!("Error: {}", e),
     }
 }
 
-fn create_secret(client: APIClient, event: &str, payload: KubeObj, project: String, namespace: String) {
+fn create_secret(
+    client: APIClient,
+    event: &str,
+    payload: KubeObj,
+    project: String,
+    namespace: String,
+) {
     println!("Event {} on resource {}", event, payload.metadata.name);
+    let secret = generate_secret(&payload, project.as_str(), event);
+    let data = serde_json::to_vec(&secret);
+    println!("{}", serde_json::to_string_pretty(&secret).unwrap());
+    if data.is_err() {
+        println!("Error serializing secret: {}", data.unwrap_err());
+        return;
+    }
+
+    let pp = PostParams::default();
+    match Api::v1Secret(client)
+        .within(namespace.as_str())
+        .create(&pp, data.unwrap())
+    {
+        Ok(_) => println!("Sent Brigade event"),
+        Err(e) => println!("Error sending event: {}", e),
+    };
+}
+
+fn generate_secret(payload: &KubeObj, project: &str, event: &str) -> serde_json::Value {
     let uid = ulid::Ulid::new().to_string().to_ascii_lowercase();
     let name = format!("buck-{}", uid);
-    let pp = PostParams::default();
-    let encoded_payload = serde_json::to_string(&payload).unwrap_or_else(|_| "".to_string());
-    let secret = json!({
+    let encoded_payload = serde_json::to_string(payload).unwrap_or_else(|_| "".to_string());
+    json!({
         "apiVersion": "v1",
         "kind": "Secret",
         "metadata": {
             "name": name,
             "labels": {
                 "heritage": "brigade",
-                "project": project.as_str(),
+                "project": project,
                 "build": uid.as_str(),
                 "component": "build"
             }
@@ -84,24 +114,31 @@ fn create_secret(client: APIClient, event: &str, payload: KubeObj, project: Stri
         "data": {
             "event_provider": base64::encode("buck"),
             "event_type": base64::encode(event),
-            "project_id": base64::encode(project.as_str()),
+            "project_id": base64::encode(project),
             "build_id": base64::encode(uid.as_str()),
             "payload": base64::encode(encoded_payload.as_str())
         }
-    });
+    })
+}
 
-    let data = serde_json::to_vec(&secret);
-    println!("{}", serde_json::to_string_pretty(&secret).unwrap());
-    if data.is_err() {
-        println!("Error serializing secret: {}", data.unwrap_err());
-        return;
+#[cfg(test)]
+mod test {
+    use kube::api::Object;
+    #[test]
+    fn test_generate_secret() {
+        let payload: Object<serde_json::Value, serde_json::Value> = Object {
+            types: kube::api::TypeMeta {
+                apiVersion: Some("v1".into()),
+                kind: Some("Secret".into()),
+            },
+            metadata: kube::api::ObjectMeta::default(),
+            spec: json!({}),
+            status: None,
+        };
+        let sec = super::generate_secret(&payload, "project", "event");
+        assert_eq!("Secret", sec["kind"]);
+        let uid = &sec["metadata"]["labels"]["build"].as_str();
+        let name = format!("buck-{}", uid.expect("string data"));
+        assert_eq!(name, sec["metadata"]["name"]);
     }
-
-    match Api::v1Secret(client)
-        .within(namespace.as_str())
-        .create(&pp, data.unwrap())
-    {
-        Ok(_) => println!("Sent Brigade event"),
-        Err(e) => println!("Error sending event: {}", e),
-    };
 }
