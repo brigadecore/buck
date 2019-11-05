@@ -23,3 +23,5 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
+
+enableRBAC: true

@@ -12,7 +12,9 @@ use kube::{
 type KubeObj = Object<serde_json::Value, serde_json::Value>;
 
 fn main() {
-    let kubeconfig = config::load_kube_config().expect("kubeconfig failed to load");
+    let kubeconfig = config::load_kube_config()
+        .or_else(|_| config::incluster_config())
+        .expect("kubeconfig failed to load");
     let client = APIClient::new(kubeconfig);
     let namespace = Some(std::env::var("NAMESPACE").unwrap_or_else(|_| "default".into()));
     let project = std::env::var("PROJECT").expect("PROJECT env var is required");
