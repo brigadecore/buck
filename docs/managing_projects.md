@@ -40,7 +40,7 @@ Then create a new project, selecting slightly different options. Run `brig proje
 - When prompted to `Upload a default brigade.js script`, leave it blank
 - Answer `N` for `Configure advanced options`
 
-In this case, Buck will now read the `brigade.json` in the ConfigMap you created above. Editing the `brigade.js` script can be done two ways:
+In this case, Buck will now read the `brigade.js` in the ConfigMap you created above. Editing the `brigade.js` script can be done two ways:
 
 - You can edit the script inside of the ConfigMap using `kubectl edit configmap buck-script`
 - Or you can edit the script locally and recreate or update the ConfigMap
