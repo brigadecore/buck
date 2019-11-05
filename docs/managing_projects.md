@@ -20,7 +20,7 @@ Run `brig project create` and then answer the prompts as follows.
 
 This is a great way to quickly get your Buck project running. But updating a project requires you to use `kubectl` to update the Brigade javascript that is stored in the secret. Likewise, you can store the script in a `ConfigMap` and set `Default script ConfigMap name` to point to that ConfigMap. With this method, you merely need to edit the script in the ConfigMap and use `kubectl apply` to update it. This method is covered more below.
 
-Finally, you way wish to use a Git repository to store your `brigade.js` file. This method is covered extensively in the Brigade documentation. The [Quickstart](https://docs.brigade.sh/intro/quickstart/#using-brigade-with-a-version-control-system) is a good place to start. We don't devote any additional space to that method here.
+Finally, you may wish to use a Git repository to store your `brigade.js` file. This method is covered extensively in the Brigade documentation. The [Quickstart](https://docs.brigade.sh/intro/quickstart/#using-brigade-with-a-version-control-system) is a good place to start. We don't devote any additional space to that method here.
 
 ## Using a ConfigMap to store the Brigade script
 
