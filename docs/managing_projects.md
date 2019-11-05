@@ -20,9 +20,9 @@ Run `brig project create` and then answer the prompts as follows.
 
 This is a great way to quickly get your Buck project running. But updating a project requires you to use `kubectl` to update the Brigade javascript that is stored in the secret. Likewise, you can store the script in a `ConfigMap` and set `Default script ConfigMap name` to point to that ConfigMap. With this method, you merely need to edit the script in the ConfigMap and use `kubectl apply` to update it. This method is covered more below.
 
-Finally, you may wish to use a Git repository to store your `brigade.js` file. This method is covered extensively in the Brigade documentation. The [Quickstart](https://docs.brigade.sh/intro/quickstart/#using-brigade-with-a-version-control-system) is a good place to start. We don't devote any additional space to that method here.
+Finally, you may wish to use a Git repository to store your `brigade.js` file. This method is covered extensively in the Brigade documentation. 
 
-## Using a ConfigMap to store the Brigade script
+### Using a ConfigMap to store the Brigade script
 
 You can load your `brigade.js` file into a dedicated ConfigMap. Assuming you have a `brigade.js` file at the path `example/brigade.js`, use `kubectl` to create the ConfigMap and load it in your cluster:
 
@@ -46,3 +46,27 @@ In this case, Buck will now read the `brigade.js` in the ConfigMap you created a
 - Or you can edit the script locally and recreate or update the ConfigMap
 
 For more on using a ConfigMap, see [the Brigade documentation](https://docs.brigade.sh/topics/projects/)
+
+### Storing a Brigade script in Git
+
+The most common way of storing Brigade scripts is to put them in a Git repository and point your project configuration to that repository. The Briagde [Quickstart](https://docs.brigade.sh/intro/quickstart/#using-brigade-with-a-version-control-system) explains this process.
+
+You must create a Git repository and store your `brigade.js` file at the root of that repository. If you are using a `brigade.json` file to include additional dependencies, this is the only method that will support adding `brigade.json`.
+
+Once you have your Git repository, you can set up your project to reference that repository. Run `brig project create` and provide answers like this:
+
+```console
+$ brig project create
+? VCS or no-VCS project? *VCS*
+? Project Name *myname/myrepo*
+? Full repository name *github.com/myname/myrepo*
+? Clone URL (https://github.com/your/repo.git) *https://github.com/myname/myrepo.git*
+? Add secrets? No
+? Where should the project's shared secret come from? Auto-generate one now
+Auto-generated a Shared Secret: "XXXXXXXXXXXXXXXXX"
+? Configure GitHub Access? No
+? Configure advanced options No
+Project ID: brigade-XXXXXXXXX
+```
+
+The above will create a project that pulls its `brigade.js` (and `brigade.json`) from the `myname/myrepo` repository at GitHub.
