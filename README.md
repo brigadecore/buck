@@ -2,7 +2,7 @@
 
 BUCK is the fastest way to build new controllers for Kubernetes. Define your CRD (or use an existing resource), and write a few lines of JavaScript for your controller code.
 
-BUCK uses the event system of [Brigade](https://brigade.sh) to handle Kubernetes events. And it abstracts away the process of modeling and defining resource types. It's ultra-fast Rust server manages the controller (the _informer_ in Kubernetes terminology) and you just write the handling code. If you can install a Helm chart and write a few lines of JS, you can build a Kubernetes controller.
+BUCK uses the event system of [Brigade](https://brigade.sh) to handle Kubernetes events. And it abstracts away the process of modeling and defining resource types. Its ultra-fast Rust server manages the controller (the _informer_ in Kubernetes terminology) and you just write the handling code. If you can install a Helm chart and write a few lines of JS, you can build a Kubernetes controller.
 
 If you have Brigade installed and configured, BUCK is as easy as 1-2-3.
 
