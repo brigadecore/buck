@@ -101,7 +101,7 @@ fn generate_secret(payload: &KubeObj, project: &str, event: &str) -> serde_json:
     let name = format!("buck-{}", uid);
     let encoded_payload = serde_json::to_string(payload).unwrap_or_else(|_| "".to_string());
 
-    // Currently have not imlemented clone_url or log_level
+    // Currently have not implemented clone_url or log_level
     json!({
         "apiVersion": "v1",
         "kind": "Secret",
