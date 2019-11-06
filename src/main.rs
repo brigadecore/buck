@@ -65,7 +65,7 @@ fn handle(client: APIClient, event: WatchEvent<KubeObj>, project: String, namesp
         WatchEvent::Modified(o) => {
             create_secret(client, "resource_modified", o, project, namespace)
         }
-        WatchEvent::Deleted(o) => create_secret(client, "resource_delete", o, project, namespace),
+        WatchEvent::Deleted(o) => create_secret(client, "resource_deleted", o, project, namespace),
         WatchEvent::Error(e) => println!("Error: {}", e),
     }
 }
@@ -100,6 +100,8 @@ fn generate_secret(payload: &KubeObj, project: &str, event: &str) -> serde_json:
     let uid = ulid::Ulid::new().to_string().to_ascii_lowercase();
     let name = format!("buck-{}", uid);
     let encoded_payload = serde_json::to_string(payload).unwrap_or_else(|_| "".to_string());
+
+    // Currently have not implemented clone_url or log_level
     json!({
         "apiVersion": "v1",
         "kind": "Secret",
@@ -117,8 +119,10 @@ fn generate_secret(payload: &KubeObj, project: &str, event: &str) -> serde_json:
             "event_provider": base64::encode("buck"),
             "event_type": base64::encode(event),
             "project_id": base64::encode(project),
+            "build_name": base64::encode(project),
             "build_id": base64::encode(uid.as_str()),
-            "payload": base64::encode(encoded_payload.as_str())
+            "payload": base64::encode(encoded_payload.as_str()),
+            "commit_ref": base64::encode("master")
         }
     })
 }
