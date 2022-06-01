@@ -1,3 +1,7 @@
+> ⚠️&nbsp;&nbsp;This repo contains the source for a component of the Brigade
+> v1.x ecosystem. Brigade v1.x reached end-of-life on June 1, 2022 and as a
+> result, this component is no longer maintained.
+
 # BUCK: Brigade Universal Controller for Kubernetes
 
 BUCK is the fastest way to build new controllers for Kubernetes. Define your CRD (or use an existing resource), and write a few lines of JavaScript for your controller code.
